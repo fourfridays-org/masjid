@@ -124,11 +124,11 @@ MEDIA_URL = 'media/'
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = os.environ.get('WAGTAIL_SITE_NAME', default='wagtail_batteries_included')
+WAGTAIL_SITE_NAME = os.environ.get('WAGTAIL_SITE_NAME', default='Masjid')
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = 'http://example.com'
+BASE_URL = 'https://base.fourfridays.com'
 
 DEBUG = os.environ.get('DJANGO_DEBUG') == "True"
 DOMAIN_ALIASES = [
