@@ -1,9 +1,9 @@
-name: MASTER
+name: CI-CD-PIPELINE-TEST
 
 on:
   push:
     branches:
-      - 'master'
+      - 'ci-cd-pipeline-test'
     release:
       types: [published, edited]
     paths-ignore:
@@ -57,6 +57,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
       - name: Cache pip
         uses: actions/cache@v2
         with:
@@ -74,8 +77,7 @@ jobs:
               linux/arm64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:arm64
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:ci-cd-pipeline-test
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       - name: 'Current running ingress'
