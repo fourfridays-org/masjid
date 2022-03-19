@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prod-wbi-app
+  name: prod-masjid-app
   labels:
-    app: wagtail-batteries-included
+    app: masjid
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: wagtail-batteries-included
+      app: masjid
   template:
     metadata:
       labels:
-        app: wagtail-batteries-included
+        app: masjid
     spec:
       initContainers:
         - name: migrate
-          image: ghcr.io/fourfridays/wagtail-batteries-included:latest
+          image: ghcr.io/fourfridays/masjid:latest
           imagePullPolicy: Always
           command: ["python", "manage.py", "migrate"]
           envFrom:
           - secretRef:
               name: secret
       containers:
-        - image: ghcr.io/fourfridays/wagtail-batteries-included:latest
-          name: wagtail-batteries-included
+        - image: ghcr.io/fourfridays/masjid:latest
+          name: masjid
           envFrom:
           - secretRef:
               name: secret
@@ -39,10 +39,10 @@ kind: Service
 metadata:
   name: svc
   labels:
-    app: wagtail-batteries-included
+    app: masjid
 spec:
   selector:
-    app: wagtail-batteries-included
+    app: masjid
   ports:
     - port: 8088
       targetPort: 8080

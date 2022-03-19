@@ -8,10 +8,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - wbi.fourfridays.com
-    secretName: wbi-tls
+    - masjid.fourfridays.com
+    secretName: masjid-tls
   rules:
-  - host: wbi.fourfridays.com
+  - host: masjid.fourfridays.com
     http:
       paths:
         - path: /

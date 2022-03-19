@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: config
 data:
-  DOMAIN_ALIASES: "wbi.fourfridays.com"
+  DOMAIN_ALIASES: "masjid.fourfridays.com"
   DJANGO_LOGLEVEL: "info"
-  WAGTAIL_SITE_NAME: "Wagtail Batteries Included"
-  CSRF_TRUSTED_ORIGINS: "https://wbi.fourfridays.com"
+  WAGTAIL_SITE_NAME: "Masjid"
+  CSRF_TRUSTED_ORIGINS: "https://masjid.fourfridays.com"
