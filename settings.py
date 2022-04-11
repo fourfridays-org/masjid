@@ -10,6 +10,7 @@ INSTALLED_APPS = [
     'page',
     'django.contrib.sitemaps',
     'fontawesomefree',
+    'users',
     'wagtail.contrib.table_block',
 
     'wagtail.contrib.forms',
@@ -139,3 +140,4 @@ DOMAIN_ALIASES = [
 ALLOWED_HOSTS = DOMAIN_ALIASES
 CSRF_TRUSTED_ORIGINS = [os.environ.get('CSRF_TRUSTED_ORIGINS', default='http://localhost')]
 SECRET_KEY = os.environ.get('SECRET_KEY', default='<a string of random characters>')
+AUTH_USER_MODEL = 'users.User'
