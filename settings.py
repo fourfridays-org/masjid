@@ -7,6 +7,7 @@ from django_storage_url import dsn_configured_storage_class
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 INSTALLED_APPS = [
+    'documents',
     'page',
     'django.contrib.sitemaps',
     'fontawesomefree',
@@ -143,3 +144,4 @@ CSRF_TRUSTED_ORIGINS = [os.environ.get('CSRF_TRUSTED_ORIGINS', default='http://l
 SECRET_KEY = os.environ.get('SECRET_KEY', default='<a string of random characters>')
 AUTH_USER_MODEL = 'users.User'
 WAGTAILIMAGES_IMAGE_MODEL = 'images.CustomImage'
+WAGTAILDOCS_DOCUMENT_MODEL = 'documents.CustomDocument'
