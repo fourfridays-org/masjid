@@ -142,3 +142,4 @@ ALLOWED_HOSTS = DOMAIN_ALIASES
 CSRF_TRUSTED_ORIGINS = [os.environ.get('CSRF_TRUSTED_ORIGINS', default='http://localhost')]
 SECRET_KEY = os.environ.get('SECRET_KEY', default='<a string of random characters>')
 AUTH_USER_MODEL = 'users.User'
+WAGTAILIMAGES_IMAGE_MODEL = 'images.CustomImage'
