@@ -10,6 +10,7 @@ INSTALLED_APPS = [
     'page',
     'django.contrib.sitemaps',
     'fontawesomefree',
+    'images',
     'users',
     'wagtail.contrib.table_block',
 
