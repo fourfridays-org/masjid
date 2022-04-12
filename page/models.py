@@ -9,7 +9,12 @@ from wagtail.admin.edit_handlers import (
 from .blocks import ImageGridBlock, SingleColumnBlock, TwoColumnBlock, ThreeColumnBlock, FourColumnBlock, HeroImageBlock
 
 
-class StandardPage(Page):
+class BasePage(Page):
+    class Meta:
+        abstract = True
+
+
+class StandardPage(BasePage):
     body = StreamField([
         ('hero_image', HeroImageBlock(icon='image')),
         ('single_column', SingleColumnBlock(group='COLUMNS')),
