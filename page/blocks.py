@@ -70,18 +70,6 @@ class DocumentBlock(StructBlock):
         template = 'blocks/document_block.html'
 
 
-class HeroImageBlock(StructBlock):
-    hero_image = ImageChooserBlock(required=True)
-    hero_heading = CharBlock(required=False, max_length=140, help_text='40 character limit.')
-    hero_message = CharBlock(required=False, max_length=140, help_text='140 character limit.')
-    hero_photo_credit = CharBlock(required=False, max_length=80, help_text='80 character limit. This will show on the bottom right on the image')
-    hero_cta = CharBlock(required=False, verbose_name='Hero CTA', max_length=20, help_text='Text to display on Call to Action. 20 character limit.')
-
-    class Meta:
-        icon = 'image'
-        template = 'blocks/hero_image_block.html'
-        
-
 class PersonDateBlock(StructBlock):
     date = DateBlock(required=False)
     people = StreamBlock([
