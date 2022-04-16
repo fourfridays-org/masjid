@@ -37,6 +37,14 @@ class BackgroundColorBlock(FieldBlock):
     ))
 
 
+class BlockQuoteBlock(StructBlock):
+    text = CharBlock(max_length=180, help_text='180 character limit.')
+    cite = CharBlock(max_length=180, help_text='180 character limit.')
+
+    class Meta:
+        template = 'blocks/block_quote_block.html'
+
+
 class ButtonBlock(StructBlock):
     alignment = AlignmentBlock(default='start')
     size = ChoiceBlock([
@@ -177,6 +185,7 @@ class BaseStreamBlock(StreamBlock):
         template='blocks/embed_block.html')
     icon_block = IconBlock()
     table = TableBlock(template='includes/table.html')
+    block_quote = BlockQuoteBlock()
     raw_html = AlignedRAWHTMLBlock()
 
 

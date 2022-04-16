@@ -5,6 +5,10 @@
   color: rgb(6, 96, 73);
 }
 
+.border-brand {
+  border-color: rgb(0, 204, 153) !important;
+}
+
 body {
   font-family: "Ubuntu", sans-serif;
 }

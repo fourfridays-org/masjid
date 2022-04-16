@@ -9,6 +9,7 @@ h1, h2, h3, h4, h5, h6 {
 $brand: rgba(0, 204, 153, 1);
 $brand-dark: rgba(6, 96, 73, 1);
 .text-brand-dark { color: $brand-dark }
+.border-brand { border-color: $brand !important; }
 body { font-family: 'Ubuntu', sans-serif; }
 
 /*==================================
