@@ -1,0 +1,106 @@
+<<<<<<< HEAD
+=======
+/*===========================================
+*            BOOTSTRAP VARIABLES            *
+===========================================*/
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Dancing Script', cursive;
+}
+$brand: rgba(0, 204, 153, 1);
+$brand-dark: rgba(6, 96, 73, 1);
+.text-brand-dark { color: $brand-dark }
+body { font-family: 'Ubuntu', sans-serif; }
+
+/*==================================
+*            NAVIGATION            *
+==================================*/
+nav {
+    &.navbar-light {
+        z-index: 999;
+        .navbar-nav .nav-item {
+            &:hover {
+                background-color: $brand;
+                .nav-link {
+                    color: #000;
+                }
+            }
+            &.active {
+                background-color: $brand;
+                .nav-link {
+                    color: #000;
+                }
+            }
+            .nav-link { 
+                color: $brand-dark;
+                font-family: 'Dancing Script', cursive;
+                font-size: 1.4rem;
+            }
+        }
+    }
+}
+
+/*==================================
+*            HERO IMAGE            *
+==================================*/
+.hero-image figure figcaption p { 
+    font-family: 'Dancing Script', cursive; 
+    font-size: 1.4rem;
+}
+
+/*=======================================
+*            PRAYER SCHEDULE            *
+=======================================*/
+.prayer-schedule {
+    background-color: rgba(175, 215, 136, 0.56);
+}
+
+/*==============================
+*            FOOTER            *
+==============================*/
+footer {
+    background-image: url("/static/images/footer.jpg");
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    height: 30em;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 1rem;
+    .background-overlay {
+        background-color: transparent;
+        background-image: linear-gradient(0deg,#002409 40%,rgba(0,0,0,.6705882353) 100%);
+        opacity: 0.85;
+        transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        position: absolute;
+    }
+    .container {
+        top: 10em;
+        hr {
+            color: #000;
+        }
+    }
+}
+
+/*=====================================
+*            MEDIA QUERIES            *
+=====================================*/
+@media (max-width: 767.98px) {
+    .hero-image figure div {
+        position: relative !important;
+        top: 3.6em !important;
+        background-color: #151e1a !important;
+        figcaption {
+            h2 {
+                font-size: 2rem;
+            }
+            p {
+                font-size: 1.1rem;
+            }
+        }
+    }
+}
+
+>>>>>>> c95823a (CU-2kbyde9[closed] prayer_api)

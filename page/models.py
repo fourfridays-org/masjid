@@ -11,6 +11,7 @@ from wagtail.admin.edit_handlers import (
 from wagtail.images.edit_handlers import ImageChooserPanel
 
 from .blocks import ImageGridBlock, SingleColumnBlock, TwoColumnBlock, ThreeColumnBlock, FourColumnBlock
+from prayer_schedule.models import *
 
 
 class BasePage(Page):
@@ -76,3 +77,11 @@ class StandardPage(BasePage):
             ], heading='Hero Image'),
         StreamFieldPanel('body'),
     ]
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        context['prayers'] = Prayer.objects.all().exclude(title='Duha').order_by('sorter')
+        context['prayer_api'] = PrayerScheduleAPISetting.objects.get()
+        context['prayer_extra'] = PrayerScheduleExtra.objects.all()
+
+        return context

@@ -12,11 +12,16 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'fontawesomefree',
     'images',
+<<<<<<< HEAD
     'storages',
+=======
+    'prayer_schedule',
+>>>>>>> c95823a (CU-2kbyde9[closed] prayer_api)
     'users',
     'wagtail.contrib.table_block',
 
     'wagtail.contrib.forms',
+    'wagtail.contrib.modeladmin',
     'wagtail.contrib.redirects',
     'wagtail.embeds',
     'wagtail.sites',

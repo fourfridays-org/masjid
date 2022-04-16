@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"version":3,"sourceRoot":"","sources":[],"names":[],"mappings":"","file":"base.css"}
+=======
+{"version":3,"sourceRoot":"","sources":["../src/base.scss"],"names":[],"mappings":"AAAA;AAAA;AAAA;AAGA;EACI;;;AAIJ;EAAmB,OADN;;;AAEb;EAAO;;;AAEP;AAAA;AAAA;AAII;EACI;;AAEI;EACI,kBAbR;;AAcQ;EACI;;AAGR;EACI,kBAnBR;;AAoBQ;EACI;;AAGR;EACI,OAxBH;EAyBG;EACA;;;AAMhB;AAAA;AAAA;AAGA;EACI;EACA;;;AAGJ;AAAA;AAAA;AAGA;EACI;;;AAGJ;AAAA;AAAA;AAGA;EACI;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;AACA;EACI;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;AAEJ;EACI;;AACA;EACI;;;AAKZ;AAAA;AAAA;AAGA;EACI;IACI;IACA;IACA;;EAEI;IACI;;EAEJ;IACI","file":"base.css"}
+>>>>>>> c95823a (CU-2kbyde9[closed] prayer_api)
