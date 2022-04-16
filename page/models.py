@@ -81,7 +81,6 @@ class StandardPage(BasePage):
     def get_context(self, request):
         context = super().get_context(request)
         context['prayers'] = Prayer.objects.all().exclude(title='Duha').order_by('sorter')
-        context['prayer_api'] = PrayerScheduleAPISetting.objects.get()
         context['prayer_extra'] = PrayerScheduleExtra.objects.all()
 
         return context
