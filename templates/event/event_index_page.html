@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags static %}
+{% block body_class %}{{ self.slug }}{% endblock %}
+
+{% block content %}
+    {% if page.hero_image %}
+        {% image page.hero_image fill-2400x858-c100 format-webp as webp_heroimage %}
+        {% image page.hero_image fill-2400x858-c100 as heroimage %}
+        <div class="hero-image">
+            <figure>
+                <picture>
+                    <source data-sizes="auto" srcset="{{ webp_heroimage.url }}" type="image/webp">
+                    <img class="card-img img-fluid rounded-0" src="{{ heroimage.url }}" alt="{{ page.hero_image.title }}"/>
+                </picture>
+                {% if page.hero_heading or page.hero_caption %}
+                    <div  style="top: 12em; background-color: rgba(1,1,1,0.75)" class="position-absolute start-50 translate-middle">
+                        <figcaption class="text-white text-center p-2 px-4">
+                            {% if page.hero_heading %}
+                                <p class="m-0">Islamic Center of Emporia</p>
+                                <img alt="Divider" src="{% static 'images/dividers-1.png' %}"/>
+                                <h2 class="display-4">{{ page.hero_heading }}</h2>
+                            {% endif %}
+                            {% if page.hero_caption %}
+                                <p class="d-none d-sm-block"><small>{{ page.hero_caption }}</small></p>
+                            {% endif %}
+                        </figcaption>
+                    </div>
+                {% endif %}
+            </figure>
+        </div>
+    {% else %}
+        <h1 class="text-center text-uppercase my-3">{{ page.title }}</h1>
+    {% endif %}
+
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1>Upcoming Events</h1>
+            </div>
+        </div>
+
+        {% if not events %}
+            <div class="row">
+                <div class="col-12">
+                    <p>No events scheduled.</p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% for event in events %}
+            <hr/>
+            <div class="row">
+                <div class="col-3">
+                    <div class="row">
+                        <div class="col-4 pe-md-0">
+                            <p class="display-5 text-secondary">{{ event.start_time|date:"d" }}</p>
+                        </div>
+                        <div class="col-8 ps-md-0">
+                            <p class="mt-2 mb-0 lh-1">{{ event.start_time|date:"M" }}</p>
+                            <p class="text-secondary m-0"><small>{{ event.start_time|date:"l" }}</small></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <h3>{{ event.title }}</h3>
+                    <p>{{ event.start_time|date:"d" }} {{ event.start_time|date:"M" }} @ {{ event.start_time|date:"h:i a" }} – {{ event.end_time|date:"h:i a" }}</p>
+                </div>
+                <div class="col-3">
+                    <a class="btn btn-brand btn-md" href="{{ event.url }}">Event Details</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

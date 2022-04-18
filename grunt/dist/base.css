@@ -9,6 +9,14 @@
   border-color: rgb(0, 204, 153) !important;
 }
 
+.bg-brand {
+  background-color: rgba(175, 215, 136, 0.56);
+}
+
+.btn-brand {
+  background-color: rgb(0, 204, 153);
+}
+
 body {
   font-family: "Ubuntu", sans-serif;
 }

@@ -10,6 +10,8 @@ $brand: rgba(0, 204, 153, 1);
 $brand-dark: rgba(6, 96, 73, 1);
 .text-brand-dark { color: $brand-dark }
 .border-brand { border-color: $brand !important; }
+.bg-brand { background-color: rgba(175, 215, 136, 0.56); }
+.btn-brand { background-color: $brand; }
 body { font-family: 'Ubuntu', sans-serif; }
 
 /*==================================

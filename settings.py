@@ -8,6 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 INSTALLED_APPS = [
     'documents',
+    'event',
     'page',
     'django.contrib.sitemaps',
     'fontawesomefree',
