@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags static %}
+{% load wagtailcore_tags wagtailimages_tags page_tags static %}
 {% block body_class %}{{ self.slug }}{% endblock %}
 
 {% block content %}
@@ -31,6 +31,8 @@
     {% else %}
         <h1 class="text-center text-uppercase my-3">{{ page.title }}</h1>
     {% endif %}
+
+    {% announcement %}
 
     <div class="container">
         <div class="row mb-4">

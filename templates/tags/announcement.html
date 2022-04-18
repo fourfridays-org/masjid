@@ -1,0 +1,9 @@
+{% load wagtailcore_tags %}
+
+
+{% for announcement in announcements %}
+    <div class="alert alert-success text-center pt-2 pb-1 mb-3 d-print-none">
+        <h5>{{ announcement.title }}</h5>
+        <small>{{ announcement.body|richtext }}</small>
+    </div>
+{% endfor %}

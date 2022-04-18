@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags static %}
+{% load wagtailcore_tags wagtailimages_tags page_tags static %}
 {% block title %}{{ self.title }} - Event{% endblock %}
 {% block body_class %}{{ self.slug }}{% endblock %}
 
@@ -23,6 +23,8 @@
             </figure>
         </div>
     {% endif %}
+
+    {% announcement %}
 
     <div class="container">
         <div class="row">

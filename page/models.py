@@ -1,6 +1,6 @@
 from django.db import models
 
-from wagtail.core.fields import StreamField
+from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Page
 from wagtail.admin.edit_handlers import (
     FieldPanel,
@@ -9,9 +9,28 @@ from wagtail.admin.edit_handlers import (
     StreamFieldPanel,
 )
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.snippets.models import register_snippet
 
 from .blocks import ImageGridBlock, SingleColumnBlock, TwoColumnBlock, ThreeColumnBlock, FourColumnBlock
 from prayer_schedule.models import *
+
+
+@register_snippet
+class Announcement(models.Model):
+    title = models.CharField(max_length=80, help_text='80 characters maximum.')
+    body = RichTextField(max_length=180, help_text='180 characters maximum.')
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+
+    panels = [
+        FieldPanel('title'),
+        FieldPanel('body'),
+        FieldPanel('start_date'),
+        FieldPanel('end_date'),
+    ]
+
+    def __str__(self):
+        return self.title
 
 
 class BasePage(Page):
