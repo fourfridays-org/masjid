@@ -42,7 +42,7 @@ class EventIndexPage(BasePage):
 
     def get_context(self, request):
         context = super(EventIndexPage, self).get_context(request)
-        context['events'] = EventPage.objects.all()
+        context['events'] = EventPage.objects.live().all()
 
         return context
 
