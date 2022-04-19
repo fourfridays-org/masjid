@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags wagtailimages_tags page_tags static %}
+{% wagtail_site as current_site %}
 {% block body_class %}{{ self.slug }}{% endblock %}
 
 {% block content %}
@@ -16,7 +17,7 @@
                     <div  style="top: 12em; background-color: rgba(1,1,1,0.75)" class="position-absolute start-50 translate-middle">
                         <figcaption class="text-white text-center p-2 px-4">
                             {% if page.hero_heading %}
-                                <p class="m-0">Islamic Center of Emporia</p>
+                                <p class="m-0">{{ current_site.site_name }}</p>
                                 <img alt="Divider" src="{% static 'images/dividers-1.png' %}"/>
                                 <h2 class="display-4">{{ page.hero_heading }}</h2>
                             {% endif %}
