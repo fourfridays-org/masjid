@@ -62,6 +62,9 @@ class EventPage(BasePage):
     start_time = models.DateTimeField(default=timezone.now())
     end_time = models.DateTimeField(default=timezone.now())
 
+    # Empty list means that no child content types are allowed.
+    subpage_types = []
+
     content_panels = BasePage.content_panels + [
         ImageChooserPanel('hero_image'),
         StreamFieldPanel('body'),
