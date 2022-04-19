@@ -8,6 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 INSTALLED_APPS = [
     'documents',
+    'donate',
     'event',
     'page',
     'django.contrib.sitemaps',

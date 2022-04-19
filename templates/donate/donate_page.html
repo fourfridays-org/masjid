@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags page_tags static %}
+{% block title %}{{ self.title }} - Donation{% endblock %}
+{% block body_class %}{{ self.slug }}{% endblock %}
+
+{% block content %}
+    {% if page.hero_image %}
+        {% image page.hero_image fill-2400x858-c100 format-webp as webp_heroimage %}
+        {% image page.hero_image fill-2400x858-c100 as heroimage %}
+        <div class="hero-image">
+            <figure>
+                <picture>
+                    <source data-sizes="auto" srcset="{{ webp_heroimage.url }}" type="image/webp">
+                    <img class="card-img img-fluid rounded-0" src="{{ heroimage.url }}" alt="{{ page.hero_image.title }}"/>
+                </picture>
+                <div  style="top: 12em; background-color: rgba(1,1,1,0.75)" class="position-absolute start-50 translate-middle">
+                    <figcaption class="text-white text-center p-2 px-4">
+                        <p class="m-0">Islamic Center of Emporia | Donate</p>
+                        <img alt="Divider" src="{% static 'images/dividers-1.png' %}"/>
+                        <h2>{{ page.title }}</h2>
+                        <p><a class="text-uppercase btn btn-brand btn-large" target="_blank" href="{{ page.link }}">Support</a></p>
+                    </figcaption>
+                </div>
+            </figure>
+        </div>
+    {% endif %}
+
+    {% announcement %}
+
+    <div class="container">
+        <div class="row">
+            <div class="offset-1 col-7">
+                <p>{{ page.body }}</p>
+            </div>
+
+            <div class="col-3 p-4">
+                <a class="text-uppercase btn btn-brand btn-large" target="_blank" href="{{ page.link }}">Support</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

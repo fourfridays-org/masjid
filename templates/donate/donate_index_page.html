@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags page_tags static %}
+{% wagtail_site as current_site %}
+{% block body_class %}{{ self.slug }}{% endblock %}
+
+{% block content %}
+    {% if page.hero_image %}
+        {% image page.hero_image fill-2400x858-c100 format-webp as webp_heroimage %}
+        {% image page.hero_image fill-2400x858-c100 as heroimage %}
+        <div class="hero-image">
+            <figure>
+                <picture>
+                    <source data-sizes="auto" srcset="{{ webp_heroimage.url }}" type="image/webp">
+                    <img class="card-img img-fluid rounded-0" src="{{ heroimage.url }}" alt="{{ page.hero_image.title }}"/>
+                </picture>
+                {% if page.hero_heading or page.hero_caption %}
+                    <div  style="top: 12em; background-color: rgba(1,1,1,0.75)" class="position-absolute start-50 translate-middle">
+                        <figcaption class="text-white text-center p-2 px-4">
+                            {% if page.hero_heading %}
+                                <p class="m-0">{{ current_site.site_name }}</p>
+                                <img alt="Divider" src="{% static 'images/dividers-1.png' %}"/>
+                                <h2 class="display-4">{{ page.hero_heading }}</h2>
+                            {% endif %}
+                            {% if page.hero_caption %}
+                                <p class="d-none d-sm-block"><small>{{ page.hero_caption }}</small></p>
+                            {% endif %}
+                        </figcaption>
+                    </div>
+                {% endif %}
+            </figure>
+        </div>
+    {% else %}
+        <h1 class="text-center text-uppercase my-3">{{ page.title }}</h1>
+    {% endif %}
+
+    {% announcement %}
+
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1>Donation Opportunities</h1>
+            </div>
+        </div>
+
+        {% if not donations %}
+            <div class="row">
+                <div class="col-12">
+                    <p>No donations scheduled.</p>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="row">
+            {% for donate in donations %}
+                {% image donate.hero_image fill-800x800-c100 format-webp as webp_heroimage %}
+                {% image donate.hero_image fill-800x800-c100 as heroimage %}
+                <div class="col-12 col-md-6">
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="{{ heroimage.url }}" class="img-fluid rounded-start" alt="{{ page.hero_image.title }}">
+                            </div>
+                            <div class="col-md-8">
+                                <div style="min-height: 195px;" class="card-body">
+                                    <h4 class="card-title">{{ donate.title }}</h4>
+                                    <small>{{ donate.body|truncatechars_html:124 }}</small>
+                                    <p class="card-text"><a class="btn btn-brand btn-sm" href="{{ donate.url }}">Read more</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
