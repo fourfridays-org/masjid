@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 import dj_database_url
-from django_storage_url import dsn_configured_storage_class
+#from django_storage_url import dsn_configured_storage_class
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,6 +12,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'fontawesomefree',
     'images',
+    'storages',
     'users',
     'wagtail.contrib.table_block',
 
@@ -101,6 +102,11 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+AWS_S3_ACCESS_KEY_ID = os.environ.get('DEFAULT_STORAGE_DSN')
+AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -116,12 +122,12 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files
 # DEFAULT_FILE_STORAGE is configured using DEFAULT_STORAGE_DSN
-DEFAULT_STORAGE_DSN = os.environ.get('DEFAULT_STORAGE_DSN')
+#DEFAULT_STORAGE_DSN = os.environ.get('DEFAULT_STORAGE_DSN')
 # dsn_configured_storage_class() requires the name of the setting
-DefaultStorageClass = dsn_configured_storage_class('DEFAULT_STORAGE_DSN')
+#DefaultStorageClass = dsn_configured_storage_class('DEFAULT_STORAGE_DSN')
 
 # Django's DEFAULT_FILE_STORAGE requires the class name
-DEFAULT_FILE_STORAGE = 'settings.DefaultStorageClass'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_ROOT = os.path.join('/data/media')
 MEDIA_URL = 'media/'
 
