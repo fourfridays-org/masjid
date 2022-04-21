@@ -59,8 +59,8 @@ class EventPage(BasePage):
     body = StreamField([
         ('description', RichTextBlock()),
     ], default='')
-    start_time = models.DateTimeField(default=timezone.now())
-    end_time = models.DateTimeField(default=timezone.now())
+    start_time = models.DateTimeField(default='2022-04-21 00:00')
+    end_time = models.DateTimeField(default='2022-04-21 00:00')
 
     # Empty list means that no child content types are allowed.
     subpage_types = []
