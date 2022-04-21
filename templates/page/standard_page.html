@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags page_tags %}
 {% block body_class %}{{ self.slug }}{% endblock %}
 
 {% block content %}
@@ -24,46 +24,9 @@
         <h1 class="text-center text-uppercase my-3">{{ page.title }}</h1>
     {% endif %}
 
-    {% for block in page.body %}
-        {% if forloop.first %}
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 col-lg-8">
-                        {{ block }}
-                    </div>
+    {% announcement %}
 
-                    <div class="offset-1 offset-lg-0 col-10 col-lg-4 prayer-schedule p-4 my-4">
-                        <h2>Prayer Times</h2>
-                        <p class="text-center mb-0"><small>{% now "D jS F" %}</small></p>
-                        <div class="text-center my-2">
-                            <img alt="Divider" src="{% static 'images/dividers-1.png' %}"/>
-                        </div>
-                        <table class="table table-borderless">
-                            <thead>
-                                <tr>
-                                    <th scope="col"></th>
-                                    <th class="text-center" scope="col" colspan="0">Adhan</th>
-                                    <th class="text-center" scope="col">Salah</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for prayer in prayers %}
-                                    <tr style="border-bottom: 1px; border-bottom-style: dashed; border-color: #0c9;">
-                                        <th style="font-family: 'Dancing Script', cursive; font-size: 1.3rem; color: #31846f;" scope="row">{{ prayer.title|capfirst }}</th>
-                                        <td class="text-center w-50" colspan="0">{{ prayer.adhan|date:'h:i a' }}</td>
-                                        <td class="text-center w-100">{{ prayer.salah }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        {% for extra in prayer_extra %}
-                            <p>{{ extra.text|richtext }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        {% else %}
-            {{ block }}
-        {% endif %}
+    {% for block in page.body %}
+        {{ block }}
     {% endfor %}
 {% endblock %}
