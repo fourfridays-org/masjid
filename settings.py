@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 import dj_database_url
-#from django_storage_url import dsn_configured_storage_class
+from django_storage_url import dsn_configured_storage_class
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,11 +14,8 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'fontawesomefree',
     'images',
-<<<<<<< HEAD
     'storages',
-=======
     'prayer_schedule',
->>>>>>> c95823a (CU-2kbyde9[closed] prayer_api)
     'users',
     'wagtail.contrib.table_block',
 
@@ -132,14 +129,18 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files
-# DEFAULT_FILE_STORAGE is configured using DEFAULT_STORAGE_DSN
-#DEFAULT_STORAGE_DSN = os.environ.get('DEFAULT_STORAGE_DSN')
-# dsn_configured_storage_class() requires the name of the setting
-#DefaultStorageClass = dsn_configured_storage_class('DEFAULT_STORAGE_DSN')
+DEBUG = os.environ.get('DJANGO_DEBUG') == "True"
 
-# Django's DEFAULT_FILE_STORAGE requires the class name
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# Media files
+if DEBUG == True:
+    # DEFAULT_FILE_STORAGE is configured using DEFAULT_STORAGE_DSN
+    DEFAULT_STORAGE_DSN = 'file:///data/media/?url=%2Fmedia%2F'
+    # dsn_configured_storage_class() requires the name of the setting
+    DefaultStorageClass = dsn_configured_storage_class('DEFAULT_STORAGE_DSN')
+    # Django's DEFAULT_FILE_STORAGE requires the class name
+    DEFAULT_FILE_STORAGE = 'settings.DefaultStorageClass'
+else:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_ROOT = os.path.join('/data/media')
 MEDIA_URL = 'media/'
 
@@ -151,7 +152,6 @@ WAGTAIL_SITE_NAME = os.environ.get('WAGTAIL_SITE_NAME', default='Masjid')
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = os.environ.get('BASE_URL', default='localhost')
 
-DEBUG = os.environ.get('DJANGO_DEBUG') == "True"
 DOMAIN_ALIASES = [
     d.strip()
     for d in os.environ.get('DOMAIN_ALIASES', '').split(',')

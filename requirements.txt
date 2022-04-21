@@ -26,6 +26,7 @@ django==4.0.2
     # via
     #   -r requirements.in
     #   django-filter
+    #   django-storage-url
     #   django-storages
     #   django-taggit
     #   django-treebeard
@@ -35,8 +36,12 @@ django-filter==21.1
     # via wagtail
 django-modelcluster==5.3
     # via wagtail
-django-storages==1.12.3
+django-storage-url==0.8.1
     # via -r requirements.in
+django-storages==1.12.3
+    # via
+    #   -r requirements.in
+    #   django-storage-url
 django-taggit==2.1.0
     # via wagtail
 django-treebeard==4.5.1
@@ -49,6 +54,8 @@ et-xmlfile==1.1.0
     # via openpyxl
 fontawesomefree==6.0.0
     # via -r requirements.in
+furl==2.1.3
+    # via django-storage-url
 gunicorn==20.1.0
     # via -r requirements.in
 html5lib==1.1
@@ -63,6 +70,8 @@ l18n==2021.3
     # via wagtail
 openpyxl==3.0.9
     # via tablib
+orderedmultidict==1.0.1
+    # via furl
 pillow==9.0.1
     # via
     #   -r requirements.in
@@ -82,8 +91,10 @@ s3transfer==0.5.2
     # via boto3
 six==1.16.0
     # via
+    #   furl
     #   html5lib
     #   l18n
+    #   orderedmultidict
     #   python-dateutil
 soupsieve==2.3.1
     # via beautifulsoup4
