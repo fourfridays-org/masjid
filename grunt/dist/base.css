@@ -1,6 +1,10 @@
+/*===========================================
+*            BOOTSTRAP VARIABLES            *
+===========================================*/
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Dancing Script", cursive;
+}
 
-<<<<<<< HEAD
-=======
 .text-brand-dark {
   color: rgb(6, 96, 73);
 }
@@ -64,12 +68,6 @@ nav.navbar-light .navbar-nav .nav-item .nav-link {
 *            FOOTER            *
 ==============================*/
 footer {
-  background-image: url("/static/images/footer.jpg");
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-  height: 30em;
   font-family: "Ubuntu", sans-serif;
   font-size: 1rem;
 }
@@ -106,6 +104,5 @@ footer .container hr {
     font-size: 1.1rem;
   }
 }
->>>>>>> c95823a (CU-2kbyde9[closed] prayer_api)
 
 /*# sourceMappingURL=base.css.map */
