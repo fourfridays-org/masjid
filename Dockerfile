@@ -26,7 +26,7 @@ RUN pip install -U pip pip-tools wheel \
 RUN python manage.py collectstatic --noinput --clear
 
 # Port used by this container to serve HTTP.
-EXPOSE 8080
+EXPOSE 80
 
 # GUNICORN
-CMD ["gunicorn", "--bind", ":8080", "--workers", "3", "wsgi"]
+CMD ["gunicorn", "--bind", ":80", "--workers", "3", "wsgi"]

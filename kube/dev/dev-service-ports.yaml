@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc
+  labels:
+    app: masjid
+spec:
+  selector:
+    app: masjid
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 31600
+  type: NodePort

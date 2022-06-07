@@ -1,49 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dev-wbi-app
+  name: dev-masjid-app
   labels:
-    app: wagtail-batteries-included
+    app: masjid
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: wagtail-batteries-included
+      app: masjid
   template:
     metadata:
       labels:
-        app: wagtail-batteries-included
+        app: masjid
     spec:
       initContainers:
         - name: migrate
-          image: ghcr.io/fourfridays/wagtail-batteries-included:dev
+          image: ghcr.io/fourfridays/masjid:dev
           imagePullPolicy: Always
           command: ["python", "manage.py", "migrate"]
           envFrom:
           - secretRef:
               name: secret
       containers:
-        - image: ghcr.io/fourfridays/wagtail-batteries-included:dev
-          name: wagtail-batteries-included
+        - image: ghcr.io/fourfridays/masjid:dev
+          name: masjid
           envFrom:
           - secretRef:
               name: secret
           - configMapRef:
               name: config
           ports:
-            - containerPort: 8080
+            - containerPort: 80
               name: gunicorn
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: svc
-  labels:
-    app: wagtail-batteries-included
-spec:
-  selector:
-    app: wagtail-batteries-included
-  ports:
-    - port: 8088
-      targetPort: 8080
-  type: ClusterIP
