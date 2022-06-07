@@ -83,7 +83,7 @@ jobs:
               linux/arm64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dev
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:arm64
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -91,17 +91,13 @@ jobs:
       - name: 'Current running ingress'
         id: ingress
         run: |
-          echo "::set-output name=name::$(kubectl get ingress -n ${{ secrets.K8_NAME_SPACE }} -o=jsonpath='{.items[0].metadata.name}')"
+          echo "::set-output name=name::$(kubectl get ingress -n ${{ secrets.K8_DEV_NAME_SPACE }} -o=jsonpath='{.items[0].metadata.name}')"
 
       - name: 'Deploy to K8s Deployment'
         run: |
-          kubectl -n ${{ secrets.K8_NAME_SPACE }} apply -f ./kube/prod/prod-configmap.yaml
-          kubectl -n ${{ secrets.K8_NAME_SPACE }} apply -f ./kube/prod/prod-deployment.yaml
-
-      - name: 'Check for running ingress'
-        if: "!contains(steps.ingress.outputs.name, 'prod')"
-        run: kubectl -n ${{ secrets.K8_NAME_SPACE }} apply -f ./kube/prod/prod-ingress.yaml
+          kubectl -n ${{ secrets.K8_DEV_NAME_SPACE }} apply -f ./kube/dev/dev-configmap.yaml
+          kubectl -n ${{ secrets.K8_DEV_NAME_SPACE }} apply -f ./kube/dev/dev-deployment.yaml
 
       - name: 'Restart Kubernetes App'
         run: |
-          kubectl -n ${{ secrets.K8_NAME_SPACE }} rollout restart deployment ${{ secrets.K8_APP_NAME }}
+          kubectl -n ${{ secrets.K8_DEV_NAME_SPACE }} rollout restart deployment ${{ secrets.K8_DEV_APP_NAME }}
