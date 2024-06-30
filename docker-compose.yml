@@ -1,23 +1,16 @@
-# This docker-compose.yml file is used to set up your project in the local
-# development environment *only*. It is *not* used in deployment to our cloud
-# servers, and has no effect whatsoever in cloud deployments.
-#
-# See our Developer Handbook for more information:
-# http://docs.divio.com/en/latest/reference/docker-docker-compose.html
-version: "2.4"
-
 services:
   # The web container is an instance of exactly the same Docker image as your
   # Cloud application container.
   web:
     build: "."
+    container_name: masjid-web
     links:
       - "db:postgres"
     # Change the port if you'd like to expose your project locally on a
     # different port, for example if you already use port 8000 for
     # something else.
     ports:
-      - "8080:80"
+      - "8000:80"
     volumes:
       - ".:/app:rw"
       - "./data:/data:rw"
@@ -32,9 +25,15 @@ services:
   # On the Cloud, your database runs on a dedicated cluster. Locally, we
   # replicate it in a Docker container called "db".
   db:
-    image: postgres:14.2-alpine
+    image: postgres:15.3-alpine
+    container_name: masjid-db
     environment:
       POSTGRES_DB: "db"
       POSTGRES_HOST_AUTH_METHOD: "trust"
     volumes:
-      - ".:/app:rw"
+      - db:/var/lib/postgresql/data
+      # - ./data/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
+volumes:
+  db:
+    driver: local

@@ -1,11 +1,9 @@
 from django.db import models
 
-from wagtail.core.blocks import RichTextBlock, StructBlock
-from wagtail.core.fields import StreamField
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, StreamFieldPanel
-from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.blocks import RichTextBlock
+from wagtail.fields import StreamField
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 
-from django.utils import timezone
 from page.models import BasePage
 
 class EventIndexPage(BasePage):
@@ -34,7 +32,7 @@ class EventIndexPage(BasePage):
 
     content_panels = BasePage.content_panels + [
         MultiFieldPanel([
-            ImageChooserPanel('hero_image'),
+            FieldPanel('hero_image'),
             FieldPanel('hero_heading', classname='full'),
             FieldPanel('hero_caption', classname='full'),
             ], heading='Hero Image'),
@@ -66,8 +64,8 @@ class EventPage(BasePage):
     subpage_types = []
 
     content_panels = BasePage.content_panels + [
-        ImageChooserPanel('hero_image'),
-        StreamFieldPanel('body'),
+        FieldPanel('hero_image'),
+        FieldPanel('body'),
         FieldPanel('start_time'),
         FieldPanel('end_time'),
     ]

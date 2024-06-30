@@ -1,24 +1,24 @@
 from django.db import models
 
-from wagtail.core.fields import RichTextField, StreamField
-from wagtail.core.models import Page
-from wagtail.admin.edit_handlers import (
+from wagtail.blocks import RichTextBlock
+from wagtail.fields import StreamField
+from wagtail.models import Page
+from wagtail.admin.panels import (
     FieldPanel,
-    MultiFieldPanel,
-    PageChooserPanel,
-    StreamFieldPanel,
+    MultiFieldPanel
 )
-from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
 
-from .blocks import ImageGridBlock, SingleColumnBlock, TwoColumnBlock, ThreeColumnBlock, FourColumnBlock
-from prayer_schedule.models import *
+from page.blocks import ImageGridBlock, SingleColumnBlock, TwoColumnBlock, ThreeColumnBlock, FourColumnBlock
+from prayer_schedule.models import Prayer, PrayerScheduleExtra
 
 
 @register_snippet
 class Announcement(models.Model):
     title = models.CharField(max_length=80, help_text='80 characters maximum.')
-    body = RichTextField(max_length=180, help_text='180 characters maximum.')
+    body = StreamField([
+        ('description', RichTextBlock()),
+    ], default='')
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
 
@@ -82,19 +82,19 @@ class StandardPage(BasePage):
         ('three_columns', ThreeColumnBlock(group='COLUMNS')),
         ('four_columns', FourColumnBlock(group='COLUMNS')),
         ('image_grid', ImageGridBlock(icon='image', min_num=2, max_num=4, help_text='Minimum 2 blocks and a maximum of 4 blocks')),
-    ],default='')
+    ], default='')
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
-            ImageChooserPanel('hero_image'),
+            FieldPanel('hero_image'),
             FieldPanel('hero_heading', classname='full'),
             FieldPanel('hero_caption', classname='full'),
             MultiFieldPanel([
                 FieldPanel('hero_cta'),
-                PageChooserPanel('hero_cta_link'),
+                FieldPanel('hero_cta_link'),
                 ])
             ], heading='Hero Image'),
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
 
     def get_context(self, request):

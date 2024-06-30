@@ -1,17 +1,18 @@
-from wagtail.contrib.modeladmin.options import (
-    ModelAdmin, modeladmin_register)
-from prayer_schedule.models import *
+from wagtail.snippets.models import register_snippet
+from wagtail.snippets.views.snippets import SnippetViewSet
+from wagtail.admin.panels import FieldPanel
+
+from prayer_schedule.models import Prayer
 
 
-class PrayerModelAdmin(ModelAdmin):
+class PrayerViewSet(SnippetViewSet):
     model = Prayer
-    menu_icon = 'date'  # change as required
-    add_to_settings_menu = False  # or True to add your model to the Settings sub-menu
-    exclude_from_explorer = False # or True to exclude pages of this type from Wagtail's explorer view
-    list_per_page = 50
-    list_display = ('title', 'adhan', 'salah')
-    #ordering = ['title']
-    #list_filter = ('offering_id', 'offering_code')
-    search_fields = ('title')
 
-modeladmin_register(PrayerModelAdmin)
+    panels = [
+        FieldPanel("sorter"),
+        FieldPanel("title"),
+        FieldPanel("adhan"),
+        FieldPanel("salah"),
+    ]
+
+register_snippet(PrayerViewSet)

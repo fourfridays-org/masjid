@@ -1,10 +1,14 @@
-from pathlib import Path
 import os
 import dj_database_url
-from django_storage_url import dsn_configured_storage_class
+
+from distutils.util import strtobool
+from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# Doing this boolean check against str values. Can't set boolean values in configmap
+DEBUG = os.environ.get("DJANGO_DEBUG") == "True"
 
 INSTALLED_APPS = [
     'documents',
@@ -20,7 +24,6 @@ INSTALLED_APPS = [
     'wagtail.contrib.table_block',
 
     'wagtail.contrib.forms',
-    'wagtail.contrib.modeladmin',
     'wagtail.contrib.redirects',
     'wagtail.embeds',
     'wagtail.sites',
@@ -30,7 +33,7 @@ INSTALLED_APPS = [
     'wagtail.images',
     'wagtail.search',
     'wagtail.admin',
-    'wagtail.core',
+    'wagtail',
 
     'modelcluster',
     'taggit',
@@ -54,6 +57,36 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
+
+sentry_dsn = os.environ.get("SENTRY_DSN", "")
+if sentry_dsn:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.logging import LoggingIntegration
+    
+    # The SDK will honor the level set by the logging library, which is WARNING by default.
+    # If we want to capture records with lower severity, we need to configure
+    # the logger level first.
+    logging.basicConfig(level=logging.INFO)
+
+    def ignore_disallowedhost(event, hint):
+        if event.get("logger", None) == "django.security.DisallowedHost":
+            return None
+        return event
+
+    sentry_sdk.init(
+        dsn=sentry_dsn,
+        before_send=ignore_disallowedhost,
+        integrations=[
+            LoggingIntegration(
+                level=logging.INFO,        # Capture info and above as breadcrumbs
+                event_level=logging.INFO   # Send records as events
+            ),
+            DjangoIntegration(),
+        ],
+        traces_sample_rate=0.2,
+        send_default_pii=True,
+    )
 
 ROOT_URLCONF = 'urls'
 
@@ -101,56 +134,62 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'America/Los_Angeles'
+TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-AWS_S3_OBJECT_PARAMETERS = {
-    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
-    'CacheControl': 'max-age=94608000',
-}
-AWS_S3_ACCESS_KEY_ID = os.environ.get('DEFAULT_STORAGE_DSN')
-AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
-AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')
-
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = ["static"]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-
 STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
-STATICFILES_DIRS = ['static']
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-DEBUG = os.environ.get('DJANGO_DEBUG') == "True"
+staticfiles_backend = "django.contrib.staticfiles.storage.StaticFilesStorage"
+STATIC_URL = "/static/"
 
-# Media files
-if DEBUG == True:
-    # DEFAULT_FILE_STORAGE is configured using DEFAULT_STORAGE_DSN
-    DEFAULT_STORAGE_DSN = 'file:///data/media/?url=%2Fmedia%2F'
-    # dsn_configured_storage_class() requires the name of the setting
-    DefaultStorageClass = dsn_configured_storage_class('DEFAULT_STORAGE_DSN')
-    # Django's DEFAULT_FILE_STORAGE requires the class name
-    DEFAULT_FILE_STORAGE = 'settings.DefaultStorageClass'
+if DEBUG is True:
+    storage_backend = "django.core.files.storage.FileSystemStorage"
+    MEDIA_URL = "media/"
+    MEDIA_ROOT = os.path.join("/data/media")
 else:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-MEDIA_ROOT = os.path.join('/data/media')
-MEDIA_URL = 'media/'
+    AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", default=None)
+    AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", default=None)
+    AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", default=None)
+    AWS_DEFAULT_ACL = None
+    AWS_S3_CUSTOM_DOMAIN = "d2s34nehzymfnm.cloudfront.net"
+    AWS_IS_GZIPPED = os.environ.get("AWS_IS_GZIPPED", default=True)
+    AWS_S3_OBJECT_PARAMETERS = {
+        "Expires": "Thu, 31 Dec 2099 20:00:00 GMT",
+        "CacheControl": "max-age=94608000",
+    }
+    # S3 static settings
+    # STATIC_LOCATION = "static"
+    # STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/"
+    # staticfiles_backend = "page.storage_backends.StaticStorage"
+    # S3 public media settings
+    PUBLIC_MEDIA_LOCATION = "media"
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/"
+    storage_backend = "page.storage_backends.PublicMediaStorage"
+    # S3 private media settings
+    PRIVATE_MEDIA_LOCATION = "private"
+    PRIVATE_FILE_STORAGE = "page.storage_backends.PrivateMediaStorage"
+
+STORAGES = {
+    "default": {"BACKEND": storage_backend},
+    "staticfiles": {"BACKEND": staticfiles_backend},
+}
 
 # Wagtail settings
-
 WAGTAIL_SITE_NAME = os.environ.get('WAGTAIL_SITE_NAME', default='Masjid')
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = os.environ.get('BASE_URL', default='localhost')
+WAGTAILADMIN_BASE_URL = os.environ.get('WAGTAILADMIN_BASE_URL', default='Masjid')
 
 DOMAIN_ALIASES = [
     d.strip()
@@ -160,6 +199,19 @@ DOMAIN_ALIASES = [
 ALLOWED_HOSTS = DOMAIN_ALIASES
 CSRF_TRUSTED_ORIGINS = [os.environ.get('CSRF_TRUSTED_ORIGINS', default='http://localhost')]
 SECRET_KEY = os.environ.get('SECRET_KEY', default='<a string of random characters>')
+
 AUTH_USER_MODEL = 'users.User'
-WAGTAILIMAGES_IMAGE_MODEL = 'images.CustomImage'
-WAGTAILDOCS_DOCUMENT_MODEL = 'documents.CustomDocument'
+
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+# Make low-quality but small images
+WAGTAILIMAGES_AVIF_QUALITY = 60
+WAGTAILIMAGES_JPEG_QUALITY = 60
+WAGTAILIMAGES_WEBP_QUALITY = 65
+WAGTAIL_ENABLE_WHATS_NEW_BANNER = False
+
+WAGTAILIMAGES_FORMAT_CONVERSIONS = {
+    "avif": "avif",
+    "bmp": "jpeg",
+    "webp": "webp",
+}

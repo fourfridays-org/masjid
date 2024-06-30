@@ -1,6 +1,8 @@
 from django.db import models
 
-from wagtail.admin.edit_handlers import FieldPanel, RichTextField
+from wagtail.admin.panels import FieldPanel
+from wagtail.blocks import RichTextBlock
+from wagtail.fields import StreamField
 from wagtail.snippets.models import register_snippet
 
 
@@ -29,7 +31,9 @@ class PrayerScheduleAPISetting(models.Model):
 @register_snippet
 class PrayerScheduleExtra(models.Model):
     title = models.CharField(max_length=120, help_text='120 max characters', default='')
-    text = RichTextField()
+    text = StreamField([
+        ('description', RichTextBlock()),
+    ], default='')
 
     panels = [
         FieldPanel('title'),
